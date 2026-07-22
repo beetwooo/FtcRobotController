@@ -38,7 +38,7 @@ public class MecanumDrive {
 
     }
 
-    public void drive(double forward, double strafe, double rotate){
+    public void Drive(double forward, double strafe, double rotate){
         double FrontLeftPower, FrontRightPower, BackLeftPower, BackRightPower;
         double Denominator;
 
@@ -71,7 +71,7 @@ public class MecanumDrive {
         newForward = r * Math.sin(theta);
         newStrafe = r * Math.cos(theta);
 
-        this.drive(newForward, newStrafe, rotate);
+        this.Drive(newForward, newStrafe, rotate);
 
     }
 
