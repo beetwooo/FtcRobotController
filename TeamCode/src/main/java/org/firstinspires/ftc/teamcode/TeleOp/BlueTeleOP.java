@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Mecanism.ArtifactIntake;
 import org.firstinspires.ftc.teamcode.Mecanism.MecanumDrive;
 
-@TeleOp
+@TeleOp(name = "BlueTeleOP", group = "2025-2026 Test OP")
 public class BlueTeleOP extends OpMode {
 
     double forward, strafe, rotate;
