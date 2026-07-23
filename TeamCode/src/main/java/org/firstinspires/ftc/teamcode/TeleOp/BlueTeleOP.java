@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 // import org.firstinspires.ftc.teamcode.AutoCalibration.TurretTracking;
-import org.firstinspires.ftc.teamcode.Mecanism.ArtifactIntake;
-import org.firstinspires.ftc.teamcode.Mecanism.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Mecanisms.ArtifactIntake;
+import org.firstinspires.ftc.teamcode.Mecanisms.MecanumDrive;
 
 @TeleOp(name = "BlueTeleOP", group = "2025-2026 Test OP")
 public class BlueTeleOP extends OpMode {
