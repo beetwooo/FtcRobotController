@@ -35,11 +35,11 @@ public class BlueTeleOP extends OpMode {
 
          */
 
-        forward = gamepad1.left_stick_x;
+        forward = -gamepad1.left_stick_x;
         strafe = gamepad1.left_stick_y;
         rotate = gamepad1.right_stick_x;
 
-        MecanumDrive.DriveFieldRelative(forward, strafe, rotate);
+        MecanumDrive.MoveRobot(forward, strafe, rotate);
 
 //================================================
 

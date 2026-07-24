@@ -32,7 +32,7 @@ public class TeleOPTest extends OpMode {
         strafe = gamepad1.left_stick_x;
         rotate = gamepad1.right_stick_x;
 
-        MecanumDrive.DriveFieldRelative(forward, strafe, rotate);
+        MecanumDrive.MoveRobot(forward, strafe, rotate);
 
 //================================================
 
