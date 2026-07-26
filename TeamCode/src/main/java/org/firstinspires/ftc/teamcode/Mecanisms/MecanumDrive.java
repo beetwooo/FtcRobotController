@@ -9,17 +9,21 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.opencv.core.Mat;
 
 public class MecanumDrive {
 
     private DcMotor FrontLeftMotor, FrontRightMotor, BackLeftMotor, BackRightMotor;
 
-    GoBildaPinpointDriver ODO;
-    private IMU IMU;
+    //GoBildaPinpointDriver ODO;
+    // private IMU IMU;
+
+    GoBildaPinpoint GobildaPinpoint = new GoBildaPinpoint();
+
 
     public void init(HardwareMap hwMap){
 
-        ODO = hwMap.get(GoBildaPinpointDriver.class, "odo");
+        // ODO = hwMap.get(GoBildaPinpointDriver.class, "odo");
 
         FrontLeftMotor = hwMap.get(DcMotor.class, "FL");
         FrontRightMotor = hwMap.get(DcMotor.class, "FR");
@@ -34,17 +38,21 @@ public class MecanumDrive {
         BackLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BackRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        GobildaPinpoint.init(hwMap);
+
         //==============ODO VERSION==================
 
-        //ODO.setOffsets(,);
+        /*
+        ODO.setOffsets(,);
         ODO.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         ODO.setEncoderDirections(
                 GoBildaPinpointDriver.EncoderDirection.FORWARD,
                 GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
         ODO.resetPosAndIMU();
-        // Pose2D startingPosition = new Pose2D(DistanceUnit.MM. . . AngleUnit.RADIANS, );
-        //ODO.setPosition(startingPosition);
+        Pose2D startingPosition = new Pose2D(DistanceUnit.MM. . . AngleUnit.RADIANS, );
+        ODO.setPosition(startingPosition);
+         */
 
 
         //==============IMU VERSION==================
@@ -62,14 +70,56 @@ public class MecanumDrive {
 
     }
 
+    public Pose2D getTraditionalPose() {
+        return GobildaPinpoint.getTraditionalPose();
+    }
+
+    /*
+    | Degrees |        Radians |
+| ------: | -------------: |
+|      0° |              0 |
+|     90° |   π/2 ≈ 1.5708 |
+|    180° |    π ≈ 3.14159 |
+|    270° | 3π/2 ≈ 4.71239 |
+|    360° |   2π ≈ 6.28318 |
+
+     */
+
+    /*
+    while robot_is_active():
+   delta_left_encoder_pos = left_encoder_pos - prev_left_encoder_pos
+   delta_right_encoder_pos = right_encoder_pos - prev_right_encoder_pos
+   delta_center_encoder_pos = center_encoder_pos - prev_center_encoder_pos
+
+   phi = (delta_left_encoder_pos - delta_right_encoder_pos) / trackwidth
+   delta_middle_pos = (delta_left_encoder_pos + delta_right_encoder_pos) / 2
+   delta_perp_pos = delta_center_encoder_pos - forward_offset * phi
+
+   delta_x = delta_middle_pos * cos(heading) - delta_perp_pos * sin(heading)
+   delta_y = delta_middle_pos * sin(heading) + delta_perp_pos * cos(heading)
+
+   x_pos += delta_x
+   y_pos += delta_y
+   heading += phi
+
+   prev_left_encoder_pos = left_encoder_pos
+   prev_right_encoder_pos = right_encoder_pos
+   prev_center_encoder_pos = center_encoder_pos
+     */
     public void MoveRobot(double forward, double strafe, double rotate){
 
         double GlobalStrafe, GlobalForward;
         double CosAngle, SinAngle;
         double Heading;
+        double Denominator;
         double[] NewWheelSpeed = new double[4];
 
-        Pose2D Position = ODO.getPosition();
+        Denominator = Math.max(Math.abs(NewWheelSpeed[0]),
+                      Math.max(Math.abs(NewWheelSpeed[1]),
+                      Math.max(Math.abs(NewWheelSpeed[2]),
+                      Math.abs(NewWheelSpeed[3]))));
+
+        Pose2D Position = GobildaPinpoint.ODO.getPosition();
         Heading = Position.getHeading(AngleUnit.RADIANS);
 
         CosAngle = Math.cos((Math.PI / 2) - Heading);
@@ -78,19 +128,121 @@ public class MecanumDrive {
         GlobalStrafe = -forward * SinAngle + strafe * CosAngle;
         GlobalForward = forward * CosAngle + strafe * SinAngle;
 
-        NewWheelSpeed[0] = GlobalForward + GlobalForward + rotate;
-        NewWheelSpeed[1] = GlobalForward - GlobalStrafe - rotate;
-        NewWheelSpeed[2] = GlobalForward - GlobalStrafe + rotate;
-        NewWheelSpeed[3] = GlobalForward + GlobalStrafe - rotate;
+        NewWheelSpeed[0] = (GlobalForward + GlobalStrafe + rotate) / Denominator;
+        NewWheelSpeed[1] = (GlobalForward - GlobalStrafe - rotate) / Denominator;
+        NewWheelSpeed[2] = (GlobalForward - GlobalStrafe + rotate) / Denominator;
+        NewWheelSpeed[3] = (GlobalForward + GlobalStrafe - rotate) / Denominator;
+
+        /*
+        FL = +F +S -R
+
+        BL = +F -S -R
+
+        FR = +F -S +R
+
+        BR = +F +S +R
+        */
 
        FrontLeftMotor.setPower(NewWheelSpeed[0]);
        FrontRightMotor.setPower(NewWheelSpeed[1]);
        BackLeftMotor.setPower(NewWheelSpeed[2]);
        BackRightMotor.setPower(NewWheelSpeed[3]);
 
+    }
 
+    public void SetAllianceBlue(double forward, double strafe, double rotate){
+
+        double GlobalStrafe, GlobalForward;
+        double CosAngle, SinAngle;
+        double Heading, SetHeadingOffset;
+        double Denominator;
+        double[] NewWheelSpeed = new double[4];
+
+        SetHeadingOffset= Math.PI;
+        GobildaPinpoint.update();
+
+        Denominator = Math.max(Math.abs(NewWheelSpeed[0]),
+                Math.max(Math.abs(NewWheelSpeed[1]),
+                        Math.max(Math.abs(NewWheelSpeed[2]),
+                                Math.abs(NewWheelSpeed[3]))));
+
+        Pose2D Position = GobildaPinpoint.ODO.getPosition();
+        Heading = Position.getHeading(AngleUnit.RADIANS) + SetHeadingOffset;
+
+        CosAngle = Math.cos((Math.PI / 2) - Heading);
+        SinAngle = Math.sin((Math.PI / 2) - Heading);
+
+        GlobalStrafe = -forward * SinAngle + strafe * CosAngle;
+        GlobalForward = forward * CosAngle + strafe * SinAngle;
+
+        NewWheelSpeed[0] = (GlobalForward + GlobalStrafe + rotate) / Denominator;
+        NewWheelSpeed[1] = (GlobalForward - GlobalStrafe - rotate) / Denominator;
+        NewWheelSpeed[2] = (GlobalForward - GlobalStrafe + rotate) / Denominator;
+        NewWheelSpeed[3] = (GlobalForward + GlobalStrafe - rotate) / Denominator;
+
+        /*
+        FL = +F +S -R
+
+        BL = +F -S -R
+
+        FR = +F -S +R
+
+        BR = +F +S +R
+        */
+
+        FrontLeftMotor.setPower(NewWheelSpeed[0]);
+        FrontRightMotor.setPower(NewWheelSpeed[1]);
+        BackLeftMotor.setPower(NewWheelSpeed[2]);
+        BackRightMotor.setPower(NewWheelSpeed[3]);
 
     }
+
+    public void SetAllianceRed(double forward, double strafe, double rotate){
+
+        double GlobalStrafe, GlobalForward;
+        double CosAngle, SinAngle;
+        double Heading, SetHeadingOffset;
+        double Denominator;
+        double[] NewWheelSpeed = new double[4];
+
+        SetHeadingOffset= 0;
+
+        Denominator = Math.max(Math.abs(NewWheelSpeed[0]),
+                Math.max(Math.abs(NewWheelSpeed[1]),
+                        Math.max(Math.abs(NewWheelSpeed[2]),
+                                Math.abs(NewWheelSpeed[3]))));
+
+        Pose2D Position = GobildaPinpoint.ODO.getPosition();
+        Heading = Position.getHeading(AngleUnit.RADIANS) + SetHeadingOffset;
+
+        CosAngle = Math.cos((Math.PI / 2) - Heading);
+        SinAngle = Math.sin((Math.PI / 2) - Heading);
+
+        GlobalStrafe = -forward * SinAngle + strafe * CosAngle;
+        GlobalForward = forward * CosAngle + strafe * SinAngle;
+
+        NewWheelSpeed[0] = (GlobalForward + GlobalStrafe + rotate) / Denominator;
+        NewWheelSpeed[1] = (GlobalForward - GlobalStrafe - rotate) / Denominator;
+        NewWheelSpeed[2] = (GlobalForward - GlobalStrafe + rotate) / Denominator;
+        NewWheelSpeed[3] = (GlobalForward + GlobalStrafe - rotate) / Denominator;
+
+        /*
+        FL = +F +S -R
+
+        BL = +F -S -R
+
+        FR = +F -S +R
+
+        BR = +F +S +R
+        */
+
+        FrontLeftMotor.setPower(NewWheelSpeed[0]);
+        FrontRightMotor.setPower(NewWheelSpeed[1]);
+        BackLeftMotor.setPower(NewWheelSpeed[2]);
+        BackRightMotor.setPower(NewWheelSpeed[3]);
+
+    }
+
 
     //==============IMU VERSION==================
     /*
@@ -132,6 +284,5 @@ public class MecanumDrive {
     }
 
      */
-
 
 }

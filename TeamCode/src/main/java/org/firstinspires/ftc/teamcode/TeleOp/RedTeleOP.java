@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Configs.ShooterPID;
 // import org.firstinspires.ftc.teamcode.AutoCalibration.TurretTracking;
 import org.firstinspires.ftc.teamcode.Mecanisms.ArtifactIntake;
 import org.firstinspires.ftc.teamcode.Mecanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Mecanisms.Shooter;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 @TeleOp(name = "RedTeleOp", group = "2025-2026 Test OP")
 public class RedTeleOP extends OpMode {
@@ -14,6 +17,7 @@ public class RedTeleOP extends OpMode {
 
     MecanumDrive MecanumDrive = new MecanumDrive();
     ArtifactIntake ArtifactIntake = new ArtifactIntake();
+    Shooter Shooter = new Shooter();
 
     // TurretTracking TurretTracking = new TurretTracking();
 
@@ -22,6 +26,7 @@ public class RedTeleOP extends OpMode {
 
         MecanumDrive.init(hardwareMap);
         ArtifactIntake.init(hardwareMap);
+        Shooter.init(hardwareMap);
 
     }
 
@@ -39,7 +44,15 @@ public class RedTeleOP extends OpMode {
         strafe = gamepad1.left_stick_x;
         rotate = -(gamepad1.right_stick_x);
 
-        MecanumDrive.MoveRobot(forward, strafe, rotate);
+        MecanumDrive.SetAllianceRed(forward, strafe, rotate);
+        Pose2D robotPosition = MecanumDrive.getTraditionalPose();
+        Shooter.adjustForRedGoal(robotPosition);
+
+        if (gamepad1.right_bumper) {
+            Shooter.setPIDPower(ShooterPID.TARGET_VELOCITY);
+        } else {
+            Shooter.resetPID();
+        }
 
 //================================================
 
