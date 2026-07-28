@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Configs.ShooterPID;
 // import org.firstinspires.ftc.teamcode.AutoCalibration.TurretTracking;
-import org.firstinspires.ftc.teamcode.Mecanisms.ArtifactIntake;
-import org.firstinspires.ftc.teamcode.Mecanisms.MecanumDrive;
-import org.firstinspires.ftc.teamcode.Mecanisms.Shooter;
+import org.firstinspires.ftc.teamcode.Mechanisms.ArtifactIntake;
+import org.firstinspires.ftc.teamcode.Mechanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Mechanisms.Shooter;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 @TeleOp(name = "RedTeleOp", group = "2025-2026 Test OP")

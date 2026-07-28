@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.Mecanisms;
+package org.firstinspires.ftc.teamcode.Mechanisms;
 
-import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -23,7 +22,7 @@ public class GoBildaPinpoint {
                 GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
 
-       //=======TRADITIONAL FTC COORDINATE============
+        //=======TRADITIONAL FTC COORDINATE============
         ODO.resetPosAndIMU();
         Pose2D startingPosition = new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.RADIANS, Math.PI / 2 );
         ODO.setPosition(startingPosition);

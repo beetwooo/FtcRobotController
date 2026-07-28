@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 // import org.firstinspires.ftc.teamcode.AutoCalibration.TurretTracking;
-import org.firstinspires.ftc.teamcode.Mecanisms.ArtifactIntake;
-import org.firstinspires.ftc.teamcode.Mecanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Mechanisms.ArtifactIntake;
+import org.firstinspires.ftc.teamcode.Mechanisms.MecanumDrive;
 
 @TeleOp(name = "TeleOPTest-Linear", group = "2025-2026 Test OP")
 public class LinearOpModeTest extends LinearOpMode {
