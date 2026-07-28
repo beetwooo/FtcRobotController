@@ -513,7 +513,7 @@ class LateralVelocityTuner extends OpMode {
     public void loop() {
         if (gamepad1.bWasPressed()) {
             stopRobot();
-            requestOpModeStop();
+            return;
         }
 
         follower.update();
