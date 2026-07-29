@@ -16,16 +16,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(11);
-            /*
-            .forwardZeroPowerAcceleration(-49.13442133624601)
-            .lateralZeroPowerAcceleration(-75.41756400463072)
-            .translationalPIDFCoefficients(new PIDFCoefficients(0.15,0,0.015,0.03))
-            .headingPIDFCoefficients(new PIDFCoefficients(1, 0, 0.02, 0.015))
-            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015,0,0.001,0.6, 0.01))
-            .centripetalScaling(0.00048);
+            .mass(11)
+            .headingPIDFCoefficients(new PIDFCoefficients(3.5, 0, 0.1, 0.015))
+            .forwardZeroPowerAcceleration(-35.550197077806075)
+            .lateralZeroPowerAcceleration(-70.75746840341202)
+            .tra;
 
-             */
+
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 0.8, 1);
 
@@ -43,8 +40,8 @@ public class Constants {
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("odo")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD)
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
-            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -55,12 +52,10 @@ public class Constants {
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
-            /*
-            .xVelocity(73.6792174812377)
-            .yVelocity(60.481064683809066);
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .xVelocity(64.82948642039862)
+            .yVelocity(51.23178509088953);
 
-             */
 
 
 }
