@@ -1,0 +1,6 @@
+- `[/]` Fix compilation errors in Shooter.java
+    - `[ ]` Update `Shooter.java` structure (move statements into methods)
+    - `[ ]` Fix naming conventions (camelCase for instances)
+    - `[ ]` Fix `RedDistance` and `BlueDistance` logic and return types
+    - `[ ]` Fix `AdjustFlywheelVelocity` and `AdjustHoodAngle` stubs
+- `[ ]` Verify build with `./gradlew :TeamCode:assembleDebug`

@@ -3,29 +3,36 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 import com.pedropathing.math.MathFunctions;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.subConstants.PositionConst;
 import org.firstinspires.ftc.teamcode.subConstants.ShooterConst;
 
-public class ShooterV2 {
-
+public class Shooter {
     public DcMotorEx ShooterLeft, ShooterRight;
     public Servo BackShooter;
+    private Servo FrontTurretServo, BackTurretServo;
     GoBildaPinpoint GobildaPinpoint = new GoBildaPinpoint();
     ShooterConst ShooterConst = new ShooterConst();
     PositionConst PositionConst = new PositionConst();
 
-    double positionX, positionY;
-    double dx, dy;
-
+    double positionX;
+    double positionY;
 
     public void init(HardwareMap hwMap){
+        GobildaPinpoint.init(hwMap);
+
         ShooterLeft = hwMap.get(DcMotorEx.class, "SL");
         ShooterRight = hwMap.get(DcMotorEx.class, "SR");
         BackShooter = hwMap.get(Servo.class, "BS");
+
+        FrontTurretServo = hwMap.get(Servo.class, "FT");
+        BackTurretServo = hwMap.get(Servo.class, "BT");
 
         ShooterLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ShooterRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -55,30 +62,39 @@ public class ShooterV2 {
         positionY = GobildaPinpoint.ODO.getPosY(DistanceUnit.INCH);
 
     }
+    public double RedDistance(){
+        updatePosition();
+        return (Math.hypot(Math.abs(PositionConst.GoalRedX - positionX),
+                Math.abs(PositionConst.GoalRedY - positionY)));
+    }
 
-    /*
+    public double BlueDistance(){
+        updatePosition();
+        return (Math.hypot(Math.abs(PositionConst.GoalBlueX - positionX),
+                Math.abs(PositionConst.GoalBlueY - positionY)));
+    }
+
+
+/*
     public void setFlywheelVelocity(){
-        MathFunctions.clamp();
+        ShooterLeft.setVelocity(AdjustFlywheelVelocity());
+        ShooterRight.setVelocity(AdjustFlywheelVelocity());
     }
 
-    public void DistanceToGoalRed(){
-        dx = Math.abs(positionX - PositionConst.GoalRedX);
-        dy = Math.abs(positionY - PositionConst.GoalRedY);
-
-        return Math.sqrt((Math.pow(dx, 2) + Math.pow(dy, 2));
+    public void setHoodAngle(){
+        BackShooter.setPosition(AdjustHoodAngle());
     }
 
-    public void DistanceToGoalBlue(){
+    public static double AdjustFlywheelVelocity(double GoalDistance){
+        return MathFunctions.clamp();
+    }
 
-        dx = Math.abs(positionX - PositionConst.GoalBlueX);
-        dy = Math.abs(positionY - PositionConst.GoalBlueY);
-
-        return Math.sqrt((Math.pow(dx, 2) + Math.pow(dy, 2));
+    public static double AdjustHoodAngle(double GoalDistance){
+        return MathFunctions.clamp();
 
     }
 
-     */
-
+ */
 
 
 

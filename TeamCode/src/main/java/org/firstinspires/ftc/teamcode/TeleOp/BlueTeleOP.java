@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
-
-import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,30 +8,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Mechanisms.ArtifactIntake;
 import org.firstinspires.ftc.teamcode.Mechanisms.MecanumDrive;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.Mechanisms.ShooterV2;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-
-import com.bylazar.telemetry.PanelsTelemetry;
-import com.bylazar.telemetry.TelemetryManager;
+import org.firstinspires.ftc.teamcode.Mechanisms.Shooter;
 
 
 @TeleOp(name = "BlueTeleOP", group = "2025-2026 Test OP")
 public class BlueTeleOP extends OpMode {
 
-    double forward, strafe, rotate;
-
     MecanumDrive MecanumDrive = new MecanumDrive();
     ArtifactIntake ArtifactIntake = new ArtifactIntake();
-
-
-    ShooterV2 ShooterV2 = new ShooterV2();
+    Shooter Shooter = new Shooter();
 
     @Override
     public void init() {
 
         MecanumDrive.init(hardwareMap);
         ArtifactIntake.init(hardwareMap);
-        ShooterV2.init(hardwareMap);
+        Shooter.init(hardwareMap);
 
 /*
         follower = Constants.createFollower(hardwareMap);
@@ -55,33 +44,19 @@ public class BlueTeleOP extends OpMode {
 
         MecanumDrive.MoveRobot(y, x, rx);
 
-        /*
-        Pose2D robotPosition = MecanumDrive.getTraditionalPose();
-        Shooter.adjustForBlueGoal(robotPosition);
-
-        if (gamepad1.right_bumper) {
-            Shooter.setPIDPower(ShooterPID.TARGET_VELOCITY);
-        } else {
-            Shooter.resetPID();
-        }
-
-         */
-
         //=============ARTIFACT INTAKE================
-        if (gamepad1.left_bumper) {
+        if (gamepad1.left_trigger_pressed) {
             ArtifactIntake.setPower(0.7, 0.3, 0.5);
         } else if(gamepad1.right_bumper)  {
-            ArtifactIntake.setPower(0.9, 0.9, 0.0);
+            ArtifactIntake.setPower(1, 1, 0.0);
         } else {
             ArtifactIntake.setPower(0, 0, 0.5);
         }
 
-        if(gamepad1.x){
-            ShooterV2.setVelocity(2000);
-            ShooterV2.setPosition(0.5);
-        } else{
-            ShooterV2.setVelocity(0);
-            ShooterV2.setPosition(0.4);
+        if(gamepad1.a){
+            Shooter.setFlywheelVelocity();
+        }else{
+            Shooter.setHoodAngle();
         }
 
 //============================================================================================
@@ -92,7 +67,7 @@ public class BlueTeleOP extends OpMode {
             telemetry.addData("Heading (Degrees)", position.getHeading(AngleUnit.DEGREES));
             telemetry.addData("Heading (Radians)", position.getHeading(AngleUnit.RADIANS));
         }
-        telemetry.addData("curVelo", ShooterV2.ShooterLeft.getVelocity());
+        telemetry.addData("curVelo", Shooter.ShooterLeft.getVelocity());
 
         /*
         telemetry.addData("X", follower.getPose().getX());

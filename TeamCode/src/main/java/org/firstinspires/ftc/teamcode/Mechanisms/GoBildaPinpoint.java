@@ -6,16 +6,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.subConstants.HardwareConst;
 
 
 public class GoBildaPinpoint {
 
     GoBildaPinpointDriver ODO;
+    HardwareConst HardwareConst = new HardwareConst();
 
     public void init(HardwareMap hwMap){
         ODO = hwMap.get(GoBildaPinpointDriver.class, "odo");
 
-        //ODO.setOffsets(,);
+        ODO.setOffsets(HardwareConst.XPod_Offset, HardwareConst.YPod_Offset, DistanceUnit.INCH);
         ODO.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         ODO.setEncoderDirections(
                 GoBildaPinpointDriver.EncoderDirection.FORWARD,
@@ -36,5 +38,7 @@ public class GoBildaPinpoint {
     public Pose2D getTraditionalPose() {
         return ODO.getPosition();
     }
+
+
 
 }
