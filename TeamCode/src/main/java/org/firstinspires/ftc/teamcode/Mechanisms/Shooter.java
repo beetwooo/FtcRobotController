@@ -74,6 +74,14 @@ public class Shooter {
                 Math.abs(PositionConst.GoalBlueY - positionY)));
     }
 
+    public double positionX(){
+        return GobildaPinpoint.ODO.getPosX(DistanceUnit.INCH);
+    }
+
+    public double positionY(){
+        return GobildaPinpoint.ODO.getPosY(DistanceUnit.INCH);
+    }
+
 
 /*
     public void setFlywheelVelocity(){

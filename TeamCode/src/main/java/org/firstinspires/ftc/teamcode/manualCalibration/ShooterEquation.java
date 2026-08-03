@@ -56,9 +56,11 @@ public class ShooterEquation extends OpMode {
         telemetry.addData("Motor Velocity: ", Shooter.ShooterLeft.getVelocity());
         telemetry.addData("BackHood Angle: ", Shooter.BackShooter.getPosition());
         telemetry.addData("Robot Distance to Goal Red: ", Shooter.RedDistance());
-        telemetry.addData("Robot Distance to Goal Blue: ", Shooter.BlueDistance() );
-
-        //https://www.desmos.com/calculator CALCULATE THE DATA *HERE*!
+        telemetry.addData("Robot Distance to Goal Blue: ", Shooter.BlueDistance());
+        telemetry.addLine("---------디버그--------");
+        telemetry.addData("Robot Position X:", Shooter.positionX());
+        telemetry.addData("Robot Position Y:", Shooter.positionY());
+       //https://www.desmos.com/calculator
 
 
     }
